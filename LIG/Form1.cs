@@ -160,7 +160,7 @@ namespace LIG
             exportImagesButon.Enabled = true;
             _mouse_down = false;
         }
-
+        
         private void zoomTrackBarScroll(object sender, EventArgs e)
         {
             mainPictureBox.Image = (Image)(new Bitmap(imageOriginal, new Size(image.Width + image.Width * zoomTrackBar.Value / 10, image.Height + image.Height * zoomTrackBar.Value / 10)));
