@@ -129,7 +129,7 @@ namespace LIG
             //Scaling the image so that the boxes are able to cover the whole image if neeede
             float ratio;
 
-            if (image.Width >= image.Height)
+            if (image.Width > image.Height)
             {
                 ratio = (float)imageBoxes.Height / image.Height;
             }
@@ -286,7 +286,7 @@ namespace LIG
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            if (files[0].EndsWith(".jpg") || files[0].EndsWith(".jpeg") || files[0].EndsWith(".png"))
+            if (args[0].EndsWith(".jpg") || args[0].EndsWith(".JPG") || args[0].EndsWith(".jpeg") || args[0].EndsWith(".JPEG") || args[0].EndsWith(".png") || args[0].EndsWith(".PNG"))
             {
                 loadImage(files[0]);
             }

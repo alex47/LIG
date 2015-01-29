@@ -173,6 +173,9 @@
             this.Controls.Add(this.fileLocationTextBox);
             this.Controls.Add(this.loadImageButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1200, 575);
+            this.MinimumSize = new System.Drawing.Size(1200, 575);
             this.Name = "Form1";
             this.Text = "LIG";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
