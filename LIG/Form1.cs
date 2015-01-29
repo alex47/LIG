@@ -95,6 +95,9 @@ namespace LIG
                 ratio = (float)imageBoxes.Width / image.Width;
             }
 
+            pos.X = 0;
+            pos.Y = 0;
+
             image = (Image)(new Bitmap(image, new Size((int)(image.Width * ratio), (int)(image.Height * ratio))));
 
             mainPictureBox.Image = image;
