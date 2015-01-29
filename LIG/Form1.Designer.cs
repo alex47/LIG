@@ -31,23 +31,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.loadImageButton = new System.Windows.Forms.Button();
             this.fileLocationTextBox = new System.Windows.Forms.TextBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.zoomTrackBar = new System.Windows.Forms.TrackBar();
             this.picturePanel = new System.Windows.Forms.Panel();
+            this.mainPictureBox = new System.Windows.Forms.PictureBox();
             this.previewGroupBox = new System.Windows.Forms.GroupBox();
-            this.exportImagesButon = new System.Windows.Forms.Button();
-            this.zoomPictureBox = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.mainPictureBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.exportImagesButon = new System.Windows.Forms.Button();
+            this.zoomPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomTrackBar)).BeginInit();
             this.picturePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.previewGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.zoomPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // loadImageButton
@@ -68,15 +68,15 @@
             this.fileLocationTextBox.Size = new System.Drawing.Size(558, 20);
             this.fileLocationTextBox.TabIndex = 6;
             // 
-            // trackBar1
+            // zoomTrackBar
             // 
-            this.trackBar1.Location = new System.Drawing.Point(654, 18);
-            this.trackBar1.Maximum = 20;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar1.Size = new System.Drawing.Size(45, 390);
-            this.trackBar1.TabIndex = 9;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.zoomTrackBar.Location = new System.Drawing.Point(654, 18);
+            this.zoomTrackBar.Maximum = 20;
+            this.zoomTrackBar.Name = "zoomTrackBar";
+            this.zoomTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.zoomTrackBar.Size = new System.Drawing.Size(45, 390);
+            this.zoomTrackBar.TabIndex = 9;
+            this.zoomTrackBar.Scroll += new System.EventHandler(this.zoomTrackBarScroll);
             // 
             // picturePanel
             // 
@@ -85,6 +85,19 @@
             this.picturePanel.Name = "picturePanel";
             this.picturePanel.Size = new System.Drawing.Size(640, 480);
             this.picturePanel.TabIndex = 11;
+            // 
+            // mainPictureBox
+            // 
+            this.mainPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.mainPictureBox.Location = new System.Drawing.Point(-1, -1);
+            this.mainPictureBox.Name = "mainPictureBox";
+            this.mainPictureBox.Size = new System.Drawing.Size(630, 470);
+            this.mainPictureBox.TabIndex = 0;
+            this.mainPictureBox.TabStop = false;
+            this.mainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPictureBox_Paint);
+            this.mainPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseDown);
+            this.mainPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseMove);
+            this.mainPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseUp);
             // 
             // previewGroupBox
             // 
@@ -97,24 +110,6 @@
             this.previewGroupBox.TabIndex = 15;
             this.previewGroupBox.TabStop = false;
             this.previewGroupBox.Text = "Preview";
-            // 
-            // exportImagesButon
-            // 
-            this.exportImagesButon.Location = new System.Drawing.Point(705, 505);
-            this.exportImagesButon.Name = "exportImagesButon";
-            this.exportImagesButon.Size = new System.Drawing.Size(75, 23);
-            this.exportImagesButon.TabIndex = 15;
-            this.exportImagesButon.Text = "Export";
-            this.exportImagesButon.UseVisualStyleBackColor = true;
-            this.exportImagesButon.Click += new System.EventHandler(this.exportImagesButon_Click);
-            // 
-            // zoomPictureBox
-            // 
-            this.zoomPictureBox.Location = new System.Drawing.Point(654, 414);
-            this.zoomPictureBox.Name = "zoomPictureBox";
-            this.zoomPictureBox.Size = new System.Drawing.Size(45, 45);
-            this.zoomPictureBox.TabIndex = 16;
-            this.zoomPictureBox.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -146,18 +141,23 @@
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
             // 
-            // mainPictureBox
+            // exportImagesButon
             // 
-            this.mainPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.mainPictureBox.Location = new System.Drawing.Point(-1, -1);
-            this.mainPictureBox.Name = "mainPictureBox";
-            this.mainPictureBox.Size = new System.Drawing.Size(630, 470);
-            this.mainPictureBox.TabIndex = 0;
-            this.mainPictureBox.TabStop = false;
-            this.mainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPictureBox_Paint);
-            this.mainPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseDown);
-            this.mainPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseMove);
-            this.mainPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mainPictureBox_MouseUp);
+            this.exportImagesButon.Location = new System.Drawing.Point(705, 505);
+            this.exportImagesButon.Name = "exportImagesButon";
+            this.exportImagesButon.Size = new System.Drawing.Size(75, 23);
+            this.exportImagesButon.TabIndex = 15;
+            this.exportImagesButon.Text = "Export";
+            this.exportImagesButon.UseVisualStyleBackColor = true;
+            this.exportImagesButon.Click += new System.EventHandler(this.exportImagesButon_Click);
+            // 
+            // zoomPictureBox
+            // 
+            this.zoomPictureBox.Location = new System.Drawing.Point(654, 414);
+            this.zoomPictureBox.Name = "zoomPictureBox";
+            this.zoomPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.zoomPictureBox.TabIndex = 16;
+            this.zoomPictureBox.TabStop = false;
             // 
             // Form1
             // 
@@ -169,7 +169,7 @@
             this.Controls.Add(this.zoomPictureBox);
             this.Controls.Add(this.previewGroupBox);
             this.Controls.Add(this.picturePanel);
-            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.zoomTrackBar);
             this.Controls.Add(this.fileLocationTextBox);
             this.Controls.Add(this.loadImageButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -177,14 +177,14 @@
             this.Text = "LIG";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomTrackBar)).EndInit();
             this.picturePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
             this.previewGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.zoomPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zoomPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -195,7 +195,7 @@
         private System.Windows.Forms.PictureBox mainPictureBox;
         private System.Windows.Forms.Button loadImageButton;
         private System.Windows.Forms.TextBox fileLocationTextBox;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar zoomTrackBar;
         private System.Windows.Forms.Panel picturePanel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;

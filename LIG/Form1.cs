@@ -20,20 +20,32 @@ namespace LIG
         private Image imageOriginal;
         private Image imageBoxes;
 
+        //The main image and the 3 cloning images
         private Bitmap bmpImage;
         private Bitmap bmpImage1;
         private Bitmap bmpImage2;
         private Bitmap bmpImage3;
 
+        private Graphics g;
+        private Graphics g1;
+        private Graphics g2;
+        private Graphics g3;
+
+        //These variables are necessary to determine the position of the cloning boxes
         private Point pos;
         private Point posPrev;
         private Point posPrev2;
 
         private bool _mouse_down;
 
+        /*
+         * Without this 3 pixel wide gap in the right and bottom border
+         * the bitmap the clones the part of the image would go
+         * beyond the image, throwing System.OutOfMemoryException
+         */
         private int GAP = 3;
-        
-        public Form1(string filePath = null)
+
+        public Form1(string filePath)
         {
             InitializeComponent();
 
@@ -47,15 +59,32 @@ namespace LIG
             posPrev2 = new Point(0, 0);
 
             picturePanel.AutoScroll = true;
-            trackBar1.Enabled = false;
+            zoomTrackBar.Enabled = false;
             exportImagesButon.Enabled = false;
 
-            zoomPictureBox.Image = (Image)(new Bitmap(Properties.Resources.zoom, new Size( zoomPictureBox.Width, zoomPictureBox.Height)));
-            
-            if(filePath != null)
-            {
-                loadImage(filePath);
-            }            
+            zoomPictureBox.Image = (Image)(new Bitmap(Properties.Resources.zoom, new Size(zoomPictureBox.Width, zoomPictureBox.Height)));
+
+            loadImage(filePath);
+        }
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            mainPictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+            imageBoxes = Properties.Resources.LIG;
+
+            exportImagesFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            pos = new Point(0, 0);
+            posPrev = new Point(0, 0);
+            posPrev2 = new Point(0, 0);
+
+            picturePanel.AutoScroll = true;
+            zoomTrackBar.Enabled = false;
+            exportImagesButon.Enabled = false;
+
+            zoomPictureBox.Image = (Image)(new Bitmap(Properties.Resources.zoom, new Size(zoomPictureBox.Width, zoomPictureBox.Height)));
         }
         
         private void loadImageButtonClicked(object sender, EventArgs e)
@@ -73,17 +102,31 @@ namespace LIG
 
         private void loadImage(string filePath)
         {
-            image = Image.FromFile(filePath);
+            try
+            {
+                image = Image.FromFile(filePath);
+            }
+            catch
+            {
+                //Big images can not be loaded always and might throw System.OutOfMemoryException
+                //Tested with 10000x10000 resolution ~20MB image and crashed
+/*TODO: fix memory leak (the image above would allocate more than 400 MB memory)*/
+                MessageBox.Show("Unable to load the image!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             imageOriginal = image;
 
             FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
 
+            //Filtering GIF files that are disguised as JPG or PNG files in the extension (Why would anyone do that?)
             if (image.GetFrameCount(dimension) > 1)
             {
                 MessageBox.Show("Unable to work with animated images!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            //Scaling the image so that the boxes are able to cover the whole image if neeede
             float ratio;
 
             if (image.Width >= image.Height)
@@ -103,10 +146,8 @@ namespace LIG
             mainPictureBox.Image = image;
             bmpImage = new Bitmap(image.Width + GAP, image.Height + GAP);
 
-            using (Graphics g = Graphics.FromImage(bmpImage))
-            {
-                g.DrawImage(image, 0, 0, image.Width, image.Height);
-            }
+            g = Graphics.FromImage(bmpImage);
+            g.DrawImage(image, 0, 0, image.Width, image.Height);
 
             mainPictureBox.Refresh();
             pictureBox1.Refresh();
@@ -115,16 +156,22 @@ namespace LIG
 
             fileLocationTextBox.Text = filePath;
 
-            trackBar1.Enabled = true;
+            zoomTrackBar.Enabled = true;
             exportImagesButon.Enabled = true;
             _mouse_down = false;
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        private void zoomTrackBarScroll(object sender, EventArgs e)
         {
-            mainPictureBox.Image = (Image)(new Bitmap(imageOriginal, new Size(image.Width + image.Width * trackBar1.Value / 10, image.Height + image.Height * trackBar1.Value / 10)));
+            mainPictureBox.Image = (Image)(new Bitmap(imageOriginal, new Size(image.Width + image.Width * zoomTrackBar.Value / 10, image.Height + image.Height * zoomTrackBar.Value / 10)));
             bmpImage = new Bitmap(mainPictureBox.Image);
 
+            drawingBoxesOnMainImage();
+        }
+
+        private void drawingBoxesOnMainImage()
+        {
+            //Preventing the boxes to go out of screen and preventing crash
             if (pos.X < 0)
             {
                 pos.X = 0;
@@ -171,36 +218,13 @@ namespace LIG
                 pos.X = posPrev2.X + e.Location.X - posPrev.X;
                 pos.Y = posPrev2.Y + e.Location.Y - posPrev.Y;
 
-                if(pos.X < 0)
-                {
-                    pos.X = 0;
-                }
-
-                if(pos.Y < 0)
-                {
-                    pos.Y = 0;
-                }
-
-                if (pos.X + imageBoxes.Width >= mainPictureBox.Width - GAP)
-                {
-                    pos.X = mainPictureBox.Width - imageBoxes.Width - GAP;
-                }
-
-                if (pos.Y + imageBoxes.Height >= mainPictureBox.Height - GAP)
-                {
-                    pos.Y = mainPictureBox.Height - imageBoxes.Height - GAP;
-                }
-
-                mainPictureBox.Refresh();
-                pictureBox1.Refresh();
-                pictureBox2.Refresh();
-                pictureBox3.Refresh();
+                drawingBoxesOnMainImage();
             }
         }
 
         private void mainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
+            g = e.Graphics;
             g.DrawImage(imageBoxes, new Point(pos.X, pos.Y));
         }
 
@@ -210,8 +234,8 @@ namespace LIG
             {
                 bmpImage1 = bmpImage.Clone(new Rectangle(pos.X, pos.Y, 250, 250), bmpImage.PixelFormat);
 
-                Graphics g = e.Graphics;
-                g.DrawImage(bmpImage1, new Point(0, 0));
+                g1 = e.Graphics;
+                g1.DrawImage(bmpImage1, new Point(0, 0));
             }            
         }
 
@@ -220,9 +244,9 @@ namespace LIG
             if (mainPictureBox.Image != null)
             {
                 bmpImage2 = bmpImage.Clone(new Rectangle(pos.X + 312, pos.Y + 103, 124, 124), bmpImage.PixelFormat);
-            
-                Graphics g = e.Graphics;
-                g.DrawImage(bmpImage2, new Point(0, 0));
+
+                g2 = e.Graphics;
+                g2.DrawImage(bmpImage2, new Point(0, 0));
             }
         }
 
@@ -232,8 +256,8 @@ namespace LIG
             {
                 bmpImage3 = bmpImage.Clone(new Rectangle(pos.X + 312, pos.Y + 279, 124, 124), bmpImage.PixelFormat);
 
-                Graphics g = e.Graphics;
-                g.DrawImage(bmpImage3, new Point(0, 0));
+                g3 = e.Graphics;
+                g3.DrawImage(bmpImage3, new Point(0, 0));
             }
         }
 
@@ -247,7 +271,7 @@ namespace LIG
                 bmpImage2.Save(folderName + "\\" + "2.png");
                 bmpImage3.Save(folderName + "\\" + "3.png");
 
-                /*TODO: check if files actually exist*/
+/*TODO: check if files actually exist*/
 
                 if(MessageBox.Show("Images exported successfully!\nWould you like to open the folder?", "Done!", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
                 {

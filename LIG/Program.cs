@@ -14,7 +14,8 @@ namespace LIG
         [STAThread]
         static void Main(string[] args)
         {
-            //more than one arguments is not accepted
+            //the argument must be the path to a JPG or a PNG file
+            //more than one argument is not accepted
             if(args.Length > 1)
             {
                 MessageBox.Show("Only one image can be opened!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -24,7 +25,8 @@ namespace LIG
             //one argument
             if(args.Length == 1)
             {
-                if (args[0].EndsWith(".jpg") || args[0].EndsWith(".jpeg") || args[0].EndsWith(".png"))
+/*TODO: find better solution to check file extension*/
+                if (args[0].EndsWith(".jpg") || args[0].EndsWith(".JPG") || args[0].EndsWith(".jpeg") || args[0].EndsWith(".JPEG") || args[0].EndsWith(".png") || args[0].EndsWith(".PNG"))
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -34,7 +36,7 @@ namespace LIG
                 }
                 else
                 {
-                    MessageBox.Show("File format not supported!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("File format not supported!\n" + args[0], "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }                
             }
