@@ -146,6 +146,8 @@ namespace LIG
             mainPictureBox.Image = image;
             bmpImage = new Bitmap(image.Width + GAP, image.Height + GAP);
 
+            zoomTrackBar.Value = 0;
+
             g = Graphics.FromImage(bmpImage);
             g.DrawImage(image, 0, 0, image.Width, image.Height);
 
