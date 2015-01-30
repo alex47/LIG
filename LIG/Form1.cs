@@ -152,7 +152,7 @@ namespace LIG
                 newWidth = (int)(ratio * image.Width);
                 newHeight = (int)(ratio * image.Height);
 
-                //Some resolutions work in a mysterious way
+
                 if(newHeight < imageBoxes.Height)
                 {
                     ratio = (float)imageBoxes.Height / image.Height;
@@ -324,6 +324,18 @@ namespace LIG
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //moving objects
+            previewGroupBox.Left = this.Width - 495;
+            zoomTrackBar.Left = this.Width - 546;
+            zoomPictureBox.Left = this.Width - 546;
+
+            //resizing main image panel
+            picturePanel.Width = this.Width - 560;
+            picturePanel.Height = this.Height - 95;
         }
     }
 }
