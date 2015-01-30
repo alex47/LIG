@@ -126,22 +126,46 @@ namespace LIG
                 return;
             }
 
-            //Scaling the image so that the boxes are able to cover the whole image if neeede
-            float ratio;
+            //Scaling the image so that the boxes are able to cover the whole image
+            int newWidth, newHeight;
 
             if (image.Width > image.Height)
             {
-                ratio = (float)imageBoxes.Height / image.Height;
+                float ratio = (float)imageBoxes.Height / image.Height;
+
+                newWidth = (int)(ratio * image.Width);
+                newHeight = (int)(ratio * image.Height);
+
+                //Some resolutions work in a mysterious way
+                if (newWidth < imageBoxes.Width)
+                {
+                    ratio = (float)imageBoxes.Width / image.Width;
+
+                    newWidth = (int)(ratio * image.Width);
+                    newHeight = (int)(ratio * image.Height);
+                }
             }
             else
             {
-                ratio = (float)imageBoxes.Width / image.Width;
+                float ratio = (float)imageBoxes.Width / image.Width;
+
+                newWidth = (int)(ratio * image.Width);
+                newHeight = (int)(ratio * image.Height);
+
+                //Some resolutions work in a mysterious way
+                if(newHeight < imageBoxes.Height)
+                {
+                    ratio = (float)imageBoxes.Height / image.Height;
+
+                    newWidth = (int)(ratio * image.Width);
+                    newHeight = (int)(ratio * image.Height);
+                }
             }
 
             pos.X = 0;
             pos.Y = 0;
 
-            image = (Image)(new Bitmap(image, new Size((int)(image.Width * ratio), (int)(image.Height * ratio))));
+            image = (Image)(new Bitmap(image, new Size(newWidth, newHeight)));
 
             mainPictureBox.Image = image;
             bmpImage = new Bitmap(image.Width + GAP, image.Height + GAP);
@@ -285,8 +309,9 @@ namespace LIG
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-            if (args[0].EndsWith(".jpg") || args[0].EndsWith(".JPG") || args[0].EndsWith(".jpeg") || args[0].EndsWith(".JPEG") || args[0].EndsWith(".png") || args[0].EndsWith(".PNG"))
+            
+            //Why do lower case and upper case file extensions exist?
+            if (files[0].EndsWith(".jpg") || files[0].EndsWith(".JPG") || files[0].EndsWith(".jpeg") || files[0].EndsWith(".JPEG") || files[0].EndsWith(".png") || files[0].EndsWith(".PNG"))
             {
                 loadImage(files[0]);
             }
