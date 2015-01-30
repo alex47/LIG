@@ -52,7 +52,7 @@
             // 
             // loadImageButton
             // 
-            this.loadImageButton.Location = new System.Drawing.Point(8, 504);
+            this.loadImageButton.Location = new System.Drawing.Point(6, 473);
             this.loadImageButton.Name = "loadImageButton";
             this.loadImageButton.Size = new System.Drawing.Size(75, 23);
             this.loadImageButton.TabIndex = 5;
@@ -62,10 +62,10 @@
             // 
             // fileLocationTextBox
             // 
-            this.fileLocationTextBox.Location = new System.Drawing.Point(89, 507);
+            this.fileLocationTextBox.Location = new System.Drawing.Point(87, 473);
             this.fileLocationTextBox.Name = "fileLocationTextBox";
             this.fileLocationTextBox.ReadOnly = true;
-            this.fileLocationTextBox.Size = new System.Drawing.Size(558, 20);
+            this.fileLocationTextBox.Size = new System.Drawing.Size(361, 20);
             this.fileLocationTextBox.TabIndex = 6;
             // 
             // zoomTrackBar
@@ -101,12 +101,15 @@
             // 
             // previewGroupBox
             // 
+            this.previewGroupBox.Controls.Add(this.exportImagesButon);
             this.previewGroupBox.Controls.Add(this.pictureBox1);
             this.previewGroupBox.Controls.Add(this.pictureBox3);
             this.previewGroupBox.Controls.Add(this.pictureBox2);
+            this.previewGroupBox.Controls.Add(this.fileLocationTextBox);
+            this.previewGroupBox.Controls.Add(this.loadImageButton);
             this.previewGroupBox.Location = new System.Drawing.Point(705, 18);
             this.previewGroupBox.Name = "previewGroupBox";
-            this.previewGroupBox.Size = new System.Drawing.Size(470, 458);
+            this.previewGroupBox.Size = new System.Drawing.Size(470, 509);
             this.previewGroupBox.TabIndex = 15;
             this.previewGroupBox.TabStop = false;
             this.previewGroupBox.Text = "Preview";
@@ -143,7 +146,7 @@
             // 
             // exportImagesButon
             // 
-            this.exportImagesButon.Location = new System.Drawing.Point(705, 505);
+            this.exportImagesButon.Location = new System.Drawing.Point(373, 446);
             this.exportImagesButon.Name = "exportImagesButon";
             this.exportImagesButon.Size = new System.Drawing.Size(75, 23);
             this.exportImagesButon.TabIndex = 15;
@@ -165,25 +168,23 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 536);
-            this.Controls.Add(this.exportImagesButon);
             this.Controls.Add(this.zoomPictureBox);
             this.Controls.Add(this.previewGroupBox);
             this.Controls.Add(this.picturePanel);
             this.Controls.Add(this.zoomTrackBar);
-            this.Controls.Add(this.fileLocationTextBox);
-            this.Controls.Add(this.loadImageButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1200, 575);
             this.MinimumSize = new System.Drawing.Size(1200, 575);
             this.Name = "Form1";
             this.Text = "LIG";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.zoomTrackBar)).EndInit();
             this.picturePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
             this.previewGroupBox.ResumeLayout(false);
+            this.previewGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
